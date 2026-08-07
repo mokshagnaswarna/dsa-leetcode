@@ -1,24 +1,21 @@
 class Solution {
 public:
-    int singleNonDuplicate(vector<int>&arr) {
-        int n=arr.size();
-        int ans=arr[n-1];
-        for(int i=0;i<n-1;i++){
-            if(i!=0){
-                if(arr[i-1] < arr[i] && arr[i] < arr[i+1]){
-                    ans=arr[i];
-                    break;
-                }
-                
+    int singleNonDuplicate(vector<int>& arr) {
+        int left=0,right=arr.size()-1;
+        int ans=-1;
+        while(left<right){
+            int mid=left+(right-left)/2;
+            if(mid%2==1){
+                mid--;
+            }
+            if(arr[mid]==arr[mid+1]){
+                left=mid+2;
             }
             else{
-               if(arr[i] < arr[i+1]){
-                ans=arr[i];
-                
-               }
+                right=mid;
             }
             
         }
-        return ans;
+        return arr[left];
     }
 };
