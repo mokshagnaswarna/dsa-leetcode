@@ -1,4 +1,4 @@
-class Solution {
+/*class Solution {
 public:
     int trap(vector<int>& height) {
         int n=height.size();
@@ -20,9 +20,9 @@ public:
 
     }                                   
 };
+*/
 
 
-/*
 class Solution {
 public:
     int trap(vector<int>& height) {
@@ -31,18 +31,26 @@ public:
         int count=0;
         int leftmax=0,rightmax=0;
         while(left<right){
-            if(h[left]<=h[right]){
-                if(h[left]>=leftmax){
-                    leftmax=h[left];
+            if(height[left]<=height[right]){
+                if(height[left]>=leftmax){
+                    leftmax=height[left];
                 }
                 else{
-                    count+=leftmax-h[left];
+                    count+=leftmax-height[left];
                 }
+                left++;
             }
             else{
+                if(height[right]>=rightmax){
+                    rightmax=height[right];
+                }
+                else{
+                    count+=rightmax-height[right];
+                }
+                right--;
 
             }
         }
+        return count;
     }
 };
-*/
