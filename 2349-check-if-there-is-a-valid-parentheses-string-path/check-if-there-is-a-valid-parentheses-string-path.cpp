@@ -1,43 +1,44 @@
 class Solution {
 public:
-    bool hasValidPath(vector<vector<char>>& grid) {
-        const int n = grid.size();
-        const int m = grid[0].size();
-        const int pathLen = n + m - 1;
-
-        if (pathLen % 2 == 1) {
+int t[101][101][201];
+    bool solve(vector<vector<char>>& grid,int i,int j,int count){
+        int m=grid.size();
+        int n=grid[0].size();
+        count+=(grid[i][j]=='(')?1:-1;
+        if(count<0){
             return false;
         }
-        if (grid[0][0] != '(' || grid[n - 1][m - 1] != ')') {
-            return false;
+        if(t[i][j][count]!=-1){
+            return t[i][j][count];
         }
-
-        vector<vector<bitset<201>>> dp(n, vector<bitset<201>>(m));
-
-        dp[0][0].set(1);
-
-        for (int i = 0; i < n; ++i) {
-            for (int j = 0; j < m; ++j) {
-                const int change = grid[i][j] == '(' ? 1 : -1;
-
-                if (i > 0) {
-                    if (change == 1) {
-                        dp[i][j] |= dp[i - 1][j] << 1;
-                    } else {
-                        dp[i][j] |= dp[i - 1][j] >> 1;
-                    }
-                }
-
-                if (j > 0) {
-                    if (change == 1) {
-                        dp[i][j] |= dp[i][j - 1] << 1;
-                    } else {
-                        dp[i][j] |= dp[i][j - 1] >> 1;
-                    }
-                }
+        
+        
+        
+        if(i==m-1 && j==n-1){
+            return t[i][j][count]=(count==0);
+        }
+        if(i+1<m){//down
+            if(solve(grid,i+1,j,count)==true){
+                return t[i][j][count]=true;
             }
         }
-
-        return dp[n - 1][m - 1].test(0);
+        if(j+1<n){//down
+            if(solve(grid,i,j+1,count)==true){
+                return t[i][j][count]=true;
+            }
+        }
+        return t[i][j][count]=false;
+    }
+    bool hasValidPath(vector<vector<char>>& grid) {
+        int m=grid.size();
+        int n=grid[0].size();
+        if(grid[0][0]==')'){
+            return false;
+        }
+        if((m+n-1)%2!=0){
+            return false;
+        }
+        memset(t,-1,sizeof(t));
+        return solve(grid,0,0,0);
     }
 };
